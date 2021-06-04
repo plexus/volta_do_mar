@@ -1,15 +1,11 @@
-{:deps {criterium/criterium {:mvn/version "0.4.6"}
-        lambdaisland/data-printers {:mvn/version "0.0.22"}
-        com.squidpony/squidlib-util {:mvn/version "3.0.3"}
-        com.squidpony/squidlib {:mvn/version "3.0.3"}
-        com.squidpony/squidlib-extra {:mvn/version "3.0.3"}
-
-        }}
-;; Downloading: com/badlogicgames/gdx/gdx-parent/1.9.12/gdx-parent-1.9.12.pom from central
-;; Downloading: com/badlogicgames/gdx/gdx/1.9.12/gdx-1.9.12.jar from central
-;; Downloading: com/github/tommyettinger/anim8-gdx/0.2.4/anim8-gdx-0.2.4.jar from central
-;; Downloading: com/github/tommyettinger/regexodus/0.1.10/regexodus-0.1.10.jar from central
-;; Downloading: com/squidpony/squidlib-extra/3.0.3/squidlib-extra-3.0.3.jar from central
-;; Downloading: com/squidpony/squidlib-parent/3.0.3/squidlib-parent-3.0.3.pom from central
-;; Downloading: com/squidpony/squidlib-util/3.0.3/squidlib-util-3.0.3.jar from central
-;; Downloading: com/squidpony/squidlib/3.0.3/squidlib-3.0.3.jar from central
+{:paths ["src" "dev"]
+ :deps  {criterium/criterium                                {:mvn/version "0.4.6"}
+         lambdaisland/data-printers                         {:mvn/version "0.0.22"}
+         com.squidpony/squidlib-util                        {:mvn/version "3.0.3"}
+         com.squidpony/squidlib                             {:mvn/version "3.0.3"}
+         com.squidpony/squidlib-extra                       {:mvn/version "3.0.3"}
+         com.badlogicgames.gdx/gdx-backend-lwjgl3           {:mvn/version "1.9.12"}
+         com.badlogicgames.gdx/gdx$javadoc                  {:mvn/version "1.9.12"}
+         com.badlogicgames.gdx/gdx-platform                 {:mvn/version "1.9.12"}
+         com.badlogicgames.gdx/gdx-platform$natives-desktop {:mvn/version "1.9.12"}
+         djblue/portal                                      {:mvn/version "RELEASE"}}}
