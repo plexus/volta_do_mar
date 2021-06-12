@@ -1,0 +1,17 @@
+#!bin/bb
+
+(ns proj (:require [lioss.main :as lioss]
+                   [lioss.subshell :as subshell]
+                   [clojure.java.io :as io]
+                   [clojure.string :as str]
+                   [lioss.release :as release]))
+
+(lioss/main {:name "voltadomar"
+             :group-id "com.plexus.github"
+             :license :epl})
+
+
+
+;; Local Variables:
+;; mode:clojure
+;; End:

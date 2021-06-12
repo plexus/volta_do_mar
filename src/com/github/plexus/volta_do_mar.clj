@@ -3,19 +3,18 @@
   (:import
    ;; gdx application/native stuff
    com.badlogic.gdx.ApplicationAdapter
-   com.badlogic.gdx.backends.lwjgl3.Lwjgl3Application
-   com.badlogic.gdx.backends.lwjgl3.Lwjgl3ApplicationConfiguration
+   com.badlogic.gdx.ApplicationListener
 
    ;; gdx generic stuff
    com.badlogic.gdx.Gdx
-   com.badlogic.gdx.files.FileHandle 
+   com.badlogic.gdx.files.FileHandle
    com.badlogic.gdx.graphics.Camera
    com.badlogic.gdx.graphics.Color
    com.badlogic.gdx.graphics.GL20
    com.badlogic.gdx.graphics.OrthographicCamera
    com.badlogic.gdx.graphics.Texture
-   com.badlogic.gdx.graphics.g2d.Batch 
-   com.badlogic.gdx.graphics.g2d.SpriteBatch 
+   com.badlogic.gdx.graphics.g2d.Batch
+   com.badlogic.gdx.graphics.g2d.SpriteBatch
    com.badlogic.gdx.math.Rectangle
    com.badlogic.gdx.scenes.scene2d.Actor
    com.badlogic.gdx.scenes.scene2d.Stage
@@ -23,16 +22,16 @@
    com.badlogic.gdx.utils.Disposable
    com.badlogic.gdx.utils.Scaling
    com.badlogic.gdx.utils.ScreenUtils
-   com.badlogic.gdx.utils.viewport.FillViewport 
-   com.badlogic.gdx.utils.viewport.Viewport 
+   com.badlogic.gdx.utils.viewport.FillViewport
+   com.badlogic.gdx.utils.viewport.Viewport
    com.badlogic.gdx.utils.viewport.StretchViewport
    com.badlogic.gdx.utils.viewport.ScalingViewport
    com.badlogic.gdx.utils.viewport.ScreenViewport
-   com.badlogic.gdx.InputAdapter 
+   com.badlogic.gdx.InputAdapter
    com.badlogic.gdx.InputProcessor
    com.badlogic.gdx.InputMultiplexer
    com.badlogic.gdx.math.Interpolation
-   
+
    ;; squidlib gdx extensions
    squidpony.squidgrid.gui.gdx.DefaultResources
    squidpony.squidgrid.gui.gdx.FilterBatch
@@ -85,12 +84,14 @@
                                 viewport Viewport
                                 camera OrthographicCamera
                                 batch Batch
-                                
+
                                 dungeon-gen DungeonGenerator
                                 dungeon "[[C"
                                 line-dungeon "[[C"
                                 layers SparseLayers
-                                
+                                visible "[[D"
+                                resistance "[[D"
+
                                 player-coord Coord
                                 player-glyph TextCellFactory$Glyph
                                 player-speed double
@@ -163,7 +164,7 @@
 
 (defn handle-key [k alt ctrl shift]
   (let-reg [camera
-            player-glyph player-speed 
+            player-glyph player-speed
             cell-width cell-height]
     (case k
       \i (tween! ::zoom (- (.-zoom camera) 0.1) 10 identity)
@@ -253,11 +254,12 @@
             ^GreasedRegion seen (.copy (.not blockage))
             ^GreasedRegion currently-seen (.copy seen)
             _ (.fringe8way blockage)
-            
+
             ^Coord player-coord (.singleRandom (GreasedRegion. ^"[[C" line-dungeon \.) rng)
             ^long player-x (.x player-coord)
             ^long player-y (.y player-coord)
-            ^TextCellFactory$Glyph player-glyph (.glyph layers \@ SColor/BRIGHT_PINK
+            ^TextCellFactory$Glyph player-glyph (.glyph layers \@
+                                                        (.toFloatBits SColor/BRIGHT_PINK)
                                                         player-x
                                                         player-y)
             tweenables {::player-x (reify Tweenable
@@ -321,16 +323,6 @@
         (when (instance? Disposable v)
           (println "Disposing" k)
           (.dispose ^Disposable v))))))
-
-(defn start! []
-  (reg!
-   :application-loop
-   (future
-     (Lwjgl3Application.
-      (new-gdx-app)
-      (doto (Lwjgl3ApplicationConfiguration.)
-        (.setTitle "volta do mar")
-        (.setWindowedMode 800 480))))))
 
 (defn cleanup! []
   (.exit Gdx/app)

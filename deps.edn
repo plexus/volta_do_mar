@@ -1,11 +1,28 @@
 {:paths ["src" "dev"]
- :deps  {criterium/criterium                                {:mvn/version "0.4.6"}
-         lambdaisland/data-printers                         {:mvn/version "0.0.22"}
-         com.squidpony/squidlib-util                        {:mvn/version "3.0.3"}
-         com.squidpony/squidlib                             {:mvn/version "3.0.3"}
-         com.squidpony/squidlib-extra                       {:mvn/version "3.0.3"}
-         com.badlogicgames.gdx/gdx-backend-lwjgl3           {:mvn/version "1.9.12"}
-         com.badlogicgames.gdx/gdx$javadoc                  {:mvn/version "1.9.12"}
-         com.badlogicgames.gdx/gdx-platform                 {:mvn/version "1.9.12"}
-         com.badlogicgames.gdx/gdx-platform$natives-desktop {:mvn/version "1.9.12"}
-         djblue/portal                                      {:mvn/version "RELEASE"}}}
+ :deps  {com.github.plexus/clojure {:mvn/version "1.11.0-master-SNAPSHOT"}
+         lambdaisland/data-printers         {:mvn/version "0.0.22"}
+         com.squidpony/squidlib             {:mvn/version "3.0.3"}
+         com.squidpony/squidlib-util        {:mvn/version "3.0.3"}
+         com.squidpony/squidlib-extra       {:mvn/version "3.0.3"}
+         com.badlogicgames.gdx/gdx-platform {:mvn/version "1.9.12"}}
+ :aliases
+ {:dev
+  {djblue/portal       {:mvn/version "RELEASE"}
+   criterium/criterium {:mvn/version "0.4.6"}}
+  :desktop
+  {com.badlogicgames.gdx/gdx-platform$natives-desktop {:mvn/version "1.9.12"}
+   com.badlogicgames.gdx/gdx-backend-lwjgl3           {:mvn/version "1.9.12"}}
+
+  :android
+  {:extra-deps
+   {com.badlogicgames.gdx/gdx-platform$natives-armeabi-v7a {:mvn/version "1.9.12"}
+    com.badlogicgames.gdx/gdx-platform$natives-arm64-v8a {:mvn/version "1.9.12"}
+    com.badlogicgames.gdx/gdx-platform$natives-x86 {:mvn/version "1.9.12"}
+    com.badlogicgames.gdx/gdx-platform$natives-x86_64 {:mvn/version "1.9.12"}}}
+
+  :uberjar {:replace-deps {com.github.seancorfield/depstar {:mvn/version "2.0.216"}}
+            :exec-fn hf.depstar/uberjar
+            :exec-args {:aot true
+                        :main-class com.github.plexus.volta-do-mar
+                        :jar "android/app/libs/volta_do_mar.jar"
+                        :exclude [".*.clj(|s|c)" "com/badlogic.*"]}}}}
