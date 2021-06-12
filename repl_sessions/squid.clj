@@ -25,11 +25,13 @@
    com.badlogic.gdx.utils.viewport.Viewport 
    com.badlogic.gdx.utils.viewport.StretchViewport
    com.badlogic.gdx.utils.viewport.ScalingViewport
-   com.badlogic.gdx.InputAdapter
+   com.badlogic.gdx.utils.viewport.ScreenViewport
+   com.badlogic.gdx.InputAdapter 
    com.badlogic.gdx.InputProcessor
    com.badlogic.gdx.InputMultiplexer
 
    ;; squidlib gdx extensions
+   squidpony.squidgrid.gui.gdx.DefaultResources
    squidpony.squidgrid.gui.gdx.FilterBatch
    squidpony.squidgrid.gui.gdx.TextCellFactory
    squidpony.squidgrid.gui.gdx.TextCellFactory$Glyph
@@ -54,10 +56,10 @@
      (run! println (.getStackTrace t)))))
 
 (def settings {:seed "apples"
-               :grid-width 90
+               :grid-width 80
                :grid-height 25
-               :cell-width 10
-               :cell-height 15})
+               :cell-width 24
+               :cell-height 36})
 
 (def registry (atom {}))
 (defn reg! [k v] (swap! registry assoc k v) v)
@@ -94,16 +96,17 @@
                                (.getWidth Gdx/graphics)
                                (.getHeight Gdx/graphics))))
   (reg! :batch (FilterBatch.))
-  (reg! :viewport (ScalingViewport. Scaling/stretch
-                                    (.getWidth Gdx/graphics)
-                                    (.getHeight Gdx/graphics)
-                                    (rget :camera)))
+  (reg! :viewport (ScreenViewport. (rget :camera))
+        #_(ScalingViewport. Scaling/stretch
+                            (.getWidth Gdx/graphics)
+                            (.getHeight Gdx/graphics)
+                            (rget :camera)))
 
   (reg! :stage (Stage. (rget :viewport) (rget :batch)))
 
   (reg! :layers (let [{:keys [grid-width grid-height cell-width cell-height]}
                       settings]
-                  (SparseLayers. grid-width grid-height cell-width cell-height)))
+                  (SparseLayers. grid-width grid-height cell-width cell-height (DefaultResources/getCrispDejaVuFont))))
   (reg! :squid-input (input-processor))
 
   (.setInputProcessor Gdx/input ^InputProcessor (rget :squid-input))
@@ -119,14 +122,16 @@
   
   (let [{:keys [grid-width grid-height]} settings
         {:keys [^Stage stage ^SparseLayers layers dungeon]} @registry]
-
     (dotimes [x grid-width]
       (dotimes [y grid-height]
-        (.put layers x y (aget ^"[C" (aget ^"[[C" dungeon x) y))))
+        (.put layers x y (aget ^"[C" (aget ^"[[C" dungeon x) y) SColor/AZUL)))
 
     (.put layers 5 6 \@ SColor/SAFETY_ORANGE)
 
     (.addActor stage layers)))
+
+
+
 
 (defn render []
   (try
@@ -172,9 +177,6 @@
   (.exit Gdx/app)
   (reset! registry {}))
 
-(comment
-  (cleanup!))
-
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 
@@ -182,4 +184,19 @@
   (tap> (apply map (comp (partial apply str) vector) cc)))
 
 (comment
-  (tap-cc> (DungeonUtility/hashesToLines (.generate dungeon-gen))))
+  (tap-cc> (DungeonUtility/hashesToLines (.generate dungeon-gen)))
+  (start!)
+  (DungeonUtility/debugPrint (rget :dungeon))
+
+  (cleanup!)
+
+  (.lookAt (rget :camera) 400.0 240.0 0)
+  (.setToOrtho (rget :camera)
+               true
+               (.getWidth Gdx/graphics)
+               (.getHeight Gdx/graphics))
+
+  (.translate (rget :camera) 0 10)
+
+  (.-position
+   (rget :camera)))
