@@ -1,0 +1,15 @@
+Compiling this required a custom build of Clojure, and I seem to have lost the
+changes I had made, but I think it's this block in Reflector.java that is
+causing issues.
+
+
+static {
+	MethodHandle pred = null;
+	try {
+		if (! isJava8())
+			pred = MethodHandles.lookup().findVirtual(Method.class, "canAccess", MethodType.methodType(boolean.class, Object.class));
+	} catch (Throwable t) {
+		Util.sneakyThrow(t);
+	}
+	CAN_ACCESS_PRED = pred;
+}
