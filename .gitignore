@@ -2,3 +2,4 @@
 .nrepl-port
 target
 android/app/libs/volta_do_mar.jar
+.gradle

@@ -1,5 +1,6 @@
 {:paths ["src" "dev"]
- :deps  {com.github.plexus/clojure {:mvn/version "1.11.0-master-SNAPSHOT"}
+ :deps  {#_#_com.github.plexus/clojure {:mvn/version "1.11.0-master-SNAPSHOT"}
+         org.clojure/clojure {:mvn/version "1.11.0"}
          lambdaisland/data-printers         {:mvn/version "0.0.22"}
          com.squidpony/squidlib             {:mvn/version "3.0.3"}
          com.squidpony/squidlib-util        {:mvn/version "3.0.3"}
