@@ -190,3 +190,22 @@ adb shell am force-stop 'package-name/activity-name'
 
 A `rm -rf ~/.gradle/caches` or even `rm -rf ~/.gradle` seems to do wonders when
 things start misbehaving.
+
+# Cheat Sheet
+
+```
+emulator -avd android-31
+cd ~/clj-projects/volta_do_mar && clj -X:uberjar
+cd ~/clj-projects/gdx-reprise/mygame && ./gradlew android:installDebug
+# adb shell am force-stop 'com.plexus.hellogdx/com.plexus.hellogdx.AndroidLauncher'
+# adb shell am start -n 'com.plexus.hellogdx/com.plexus.hellogdx.AndroidLauncher'
+adb shell pm clear com.badlogic.mygame
+adb shell am start -n com.badlogic.mygame/.AndroidLauncher
+```
+
+cd ~/clj-projects/volta_do_mar && clj -X:uberjar && cd ~/clj-projects/gdx-reprise/mygame && ./gradlew android:installDebug && adb shell pm clear com.badlogic.mygame && adb shell am start -n com.badlogic.mygame/.AndroidLauncher
+
+
+# Links
+
+- https://github.com/simpligility/maven-android-sdk-deployer

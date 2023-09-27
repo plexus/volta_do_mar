@@ -25,5 +25,5 @@
             :exec-fn hf.depstar/uberjar
             :exec-args {:aot true
                         :main-class com.github.plexus.volta-do-mar
-                        :jar "android/app/libs/volta_do_mar.jar"
+                        :jar "../gdx-reprise/mygame/android/libs/volta_do_mar.jar"
                         :exclude [".*.clj(|s|c)" "com/badlogic.*"]}}}}

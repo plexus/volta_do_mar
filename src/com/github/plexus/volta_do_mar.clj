@@ -285,7 +285,7 @@
 
 (defn render []
   (try
-    (.glClearColor Gdx/gl 0 0 0 1)
+    (.glClearColor Gdx/gl 0 0 75 1)
     (.glClear Gdx/gl GL20/GL_COLOR_BUFFER_BIT)
     (let-reg [stage squid-input tweens camera player-glyph tweenables]
       (set! (.x (.-position camera)) (.getX player-glyph))
